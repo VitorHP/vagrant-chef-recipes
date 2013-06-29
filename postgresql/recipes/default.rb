@@ -19,13 +19,14 @@ template "/etc/postgresql/9.1/main/postgresql.conf" do
   group "postgres"
 end
 
-if File.exists? "/var/lib/postgresql/9.1/main/data/"
-  execute "rm -rf /var/lib/postgresql/9.1/main/data/*"
+execute "rm -rf /var/lib/postgresql/9.1/main/*" do
+  user "postgres"
+  command "rm -rf /var/lib/postgresql/9.1/main/*"
 end
 
 execute "create new datadir" do
   user "postgres"
-  command "/usr/lib/postgresql/9.1/bin/initdb --locale=pt_BR.UTF-8 -D /var/lib/postgresql/9.1/main/data"
+  command "/usr/lib/postgresql/9.1/bin/initdb --locale=pt_BR.UTF-8 -D /var/lib/postgresql/9.1/main"
 end
 
 execute "start database" do
